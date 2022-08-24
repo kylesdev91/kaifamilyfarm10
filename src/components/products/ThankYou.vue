@@ -1,7 +1,7 @@
 <template>
   <div class="backdrop" @click="closeThankYou">
     <div class="modal" :class="{ sale: theme === 'sale' }">
-      <Spinner  v-if="showSpinner"/>
+      <!-- <Spinner  v-if="showSpinner"/> -->
       <h1 class="thanks" v-if="showThankYou">{{ thankYouMessage }}</h1>
       <h1 class="nope" v-if="showErrorMessage">{{ errorMessage }}</h1>
     </div>
@@ -9,15 +9,15 @@
 </template>
 
 <script>
-import Spinner from '@/components/products/Spinner.vue'
+// import Spinner from '@/components/products/Spinner.vue'
 export default {
   props: ['responseFromCart'],
   components: {
-    Spinner
+    // Spinner
   },
   data() {
     return {
-      showSpinner: false,
+      // showSpinner: false,
       showThankYou: false,
       // responseFromCart: 200,
       thankYouMessage: 'Thank You!',
@@ -36,12 +36,12 @@ export default {
         this.showErrorMessage = true;
         this.showThankYou = false;
       } else {
-          await new Promise(resolve => {
-            this.showSpinner = true;
-            setTimeout(resolve, 2000)
-        })
+        //   await new Promise(resolve => {
+        //     this.showSpinner = true;
+        //     setTimeout(resolve, 2000)
+        // })
         this.showThankYou = true;
-        this.showSpinner = false;
+        // this.showSpinner = false;
       }
   }
 }

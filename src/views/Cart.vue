@@ -1,4 +1,9 @@
 <template>
+  <div v-if="showSpinner" class="backdrop">
+    <div class="modal" :class="{ sale: theme === 'sale' }">
+      <Spinner />
+    </div>
+  </div>
   <div style="margin-top: 35px; height: 2000px">
     <ThankYou
       v-if="showMsg"
@@ -38,6 +43,7 @@
 </template>
 
 <script>
+import Spinner from '@/components/products/Spinner.vue'
 import CartItemCard from '../components/cart/CartItemCard.vue';
 import CartSummaryPaymentCard from '../components/cart/CartSummaryPaymentCard.vue';
 // import items from '../data/items';
@@ -48,6 +54,7 @@ export default {
     CartItemCard,
     CartSummaryPaymentCard,
     ThankYou,
+    Spinner
   },
   data() {
     return {
@@ -55,6 +62,7 @@ export default {
       btnLabel: 'Submit',
       orderStatus: '',
       showMsg: false,
+      showSpinner: false,
       axiosStatus: '',
       responseFromCart: '',
       // items: items,
@@ -76,6 +84,7 @@ export default {
   },
   methods: {
     async sendEmail() {
+      this.showSpinner = true
       var date = new Date().toLocaleString();
       if (this.btnLabel === 'Submit') {
         // console.log(this.userInfo.userDetails);
@@ -99,11 +108,15 @@ export default {
         try {
           await axios.post('/api/sendemail', formData).then((response) => {
             this.responseFromCart = response.status
+            // console.log('New: ' + response.status)
+            // console.log('Body: ' + response.body)
           });
+          this.showSpinner = false
           this.btnLabel = 'Re-Order';
           this.showMsg = true;
           this.orderStatus = 'Order sent on ' + date;
         } catch {
+          this.showSpinner = false
           this.showMsg = true;
         }
 
@@ -197,5 +210,41 @@ export default {
   /* position: relative; */
   margin-bottom: 10px;
   /* margin-left: 250px; */
+}
+
+.modal {
+  width: 200px;
+  padding: 10px;
+  margin: 200px auto;
+  background: white;
+  border-radius: 10px;
+}
+.backdrop {
+  top: 0;
+  position: fixed;
+  background: rgba(0, 0, 0, 0.5);
+  width: 100%;
+  height: 100%;
+}
+.modal h1 {
+  color: black;
+  border: none;
+  padding: 0;
+  font-size: 30px;
+  text-align: center;
+}
+
+.modal p {
+  font-style: normal;
+}
+
+
+/* sale styles */
+.modal.sale {
+  background: green;
+  color: white;
+}
+.modal.sale h1 {
+  color: white;
 }
 </style>

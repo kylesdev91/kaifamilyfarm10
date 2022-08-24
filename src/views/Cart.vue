@@ -42,6 +42,7 @@
   </div>
 </template>
 
+
 <script>
 import Spinner from '@/components/products/Spinner.vue'
 import CartItemCard from '../components/cart/CartItemCard.vue';

@@ -1,5 +1,5 @@
 const nodemailer = require('nodemailer');
-const { SmsClient } = require('@azure/communication-sms');
+// const { SmsClient } = require('@azure/communication-sms');
 
 module.exports = async function (context, req) {
 //   const { DefaultAzureCredential } = require('@azure/identity');
@@ -43,17 +43,15 @@ module.exports = async function (context, req) {
       '</td></tr></tbody></table></div>',
   };
 
-  transporter.sendMail(mailOptions, (error, info) => {
-    if (error) {
-      console.log(error);
-    } else {
-        console.log('Sent: ' + info.response);
-        // smsClient.send({
-        //     from: "+18444021959",
-        //     to: ["+14699106366", "+14695250450", "+19043927442", "+14695341938"],
-        //     // to: ["+14699106366", "+14057610896"],
-        //     message: "Order from  " + req.body.emailAddress + "... " + req.body.orderTotal
-        // });
-    }
-  });
-};
+  try {
+    await transporter.sendMail(mailOptions);
+    // console.log('Message sent: %s', response);
+          
+  } catch (error) {
+    console.log('****error =' + error);
+    context.res = {
+      status: 900,
+      // body: "Please pass a videoId on the query string or in the request body"
+    };
+  }
+}
